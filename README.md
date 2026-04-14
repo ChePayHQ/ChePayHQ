@@ -4,6 +4,7 @@ ChePay Core integration/staging tree
 ChePay is a Litecoin-derived memecoin with utility. The codebase keeps the
 Litecoin-derived core architecture, but the chain parameters, branding,
 network ports, and installer assets are set for ChePay.
+TPS 400
 
 Project home: <https://github.com/ChePayHQ/ChePayHQ>
 
