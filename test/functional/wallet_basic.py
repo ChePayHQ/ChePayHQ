@@ -17,7 +17,7 @@ from test_framework.util import (
 from test_framework.wallet_util import test_address
 
 OUT_OF_RANGE = "Amount out of range"
-BLOCK_REWARD = 150
+BLOCK_REWARD = 100
 
 
 class WalletTest(BitcoinTestFramework):
@@ -160,7 +160,7 @@ class WalletTest(BitcoinTestFramework):
         self.nodes[1].generate(COINBASE_MATURITY)
         self.sync_all(self.nodes[0:3])
 
-        # node0 should end up with 300 CPY in block rewards plus fees, but
+        # node0 should end up with 200 CPY in block rewards plus fees, but
         # minus the 21 plus fees sent to node2
         assert_equal(self.nodes[0].getbalance(), BLOCK_REWARD * 2 - 21)
         assert_equal(self.nodes[2].getbalance(), 21)
@@ -190,7 +190,7 @@ class WalletTest(BitcoinTestFramework):
         self.sync_all(self.nodes[0:3])
 
         assert_equal(self.nodes[0].getbalance(), 0)
-        assert_equal(self.nodes[2].getbalance(), 294)
+        assert_equal(self.nodes[2].getbalance(), 194)
 
         # Verify that a spent output cannot be locked anymore
         spent_0 = {"txid": node0utxos[0]["txid"], "vout": node0utxos[0]["vout"]}
@@ -203,7 +203,7 @@ class WalletTest(BitcoinTestFramework):
         txid = self.nodes[2].sendtoaddress(address, 10, "", "", False)
         self.nodes[2].generate(1)
         self.sync_all(self.nodes[0:3])
-        node_2_bal = self.check_fee_amount(self.nodes[2].getbalance(), Decimal('284'), fee_per_byte, self.get_vsize(self.nodes[2].gettransaction(txid)['hex']))
+        node_2_bal = self.check_fee_amount(self.nodes[2].getbalance(), Decimal('184'), fee_per_byte, self.get_vsize(self.nodes[2].gettransaction(txid)['hex']))
         assert_equal(self.nodes[0].getbalance(), Decimal('10'))
 
         # Send 10 CPY with subtract fee from amount

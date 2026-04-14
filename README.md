@@ -23,9 +23,9 @@ Project home: <https://github.com/ChePayHQ/ChePayHQ>
 | Block time | 45 seconds |
 | Difficulty adjustment | Every block |
 | Transaction confirmations | 6 confirmations |
-| Base block reward | 150 CPY/block |
+| Base block reward | 100 CPY/block |
 | Halving interval | 2,800,000 blocks |
-| Max supply | 840,000,000 CPY |
+| Max supply | 560,000,000 CPY |
 | Transaction fee | 0.00000001 CPY per byte, adjustable |
 | P2P port | 28333 |
 | RPC port | 28332 |
@@ -36,7 +36,7 @@ Project home: <https://github.com/ChePayHQ/ChePayHQ>
 
 ### Economics
 
-ChePay uses a fixed-supply, reward-halving model that starts at 150 CPY per
+ChePay uses a fixed-supply, reward-halving model that starts at 100 CPY per
 block and halves every 2,800,000 blocks, or roughly every 4 years at the
 45-second block target.
 
@@ -46,10 +46,10 @@ model.
 
 That schedule yields:
 
-* 420,000,000 CPY in the first era
-* 630,000,000 CPY after the first halving
-* 735,000,000 CPY after the second halving
-* a long-tail emission curve that asymptotically approaches 840,000,000 CPY
+* 280,000,000 CPY in the first era
+* 420,000,000 CPY after the first halving
+* 490,000,000 CPY after the second halving
+* a long-tail emission curve that asymptotically approaches 560,000,000 CPY
 
 The economics are intentionally simple:
 
@@ -67,23 +67,23 @@ The economics are intentionally simple:
 
 ### Issuance Schedule
 
-The block subsidy starts at 150 CPY and halves every 2,800,000 blocks. The
+The block subsidy starts at 100 CPY and halves every 2,800,000 blocks. The
 first few eras are:
 
 | Era | Block reward | Blocks in era | Issued in era | Cumulative supply |
 | --- | --- | --- | --- | --- |
-| 1 | 150 CPY | 2,800,000 | 420,000,000 | 420,000,000 |
-| 2 | 75 CPY | 2,800,000 | 210,000,000 | 630,000,000 |
-| 3 | 37.5 CPY | 2,800,000 | 105,000,000 | 735,000,000 |
-| 4 | 18.75 CPY | 2,800,000 | 52,500,000 | 787,500,000 |
-| 5 | 9.375 CPY | 2,800,000 | 26,250,000 | 813,750,000 |
-| 6 | 4.6875 CPY | 2,800,000 | 13,125,000 | 826,875,000 |
-| 7 | 2.34375 CPY | 2,800,000 | 6,562,500 | 833,437,500 |
-| 8 | 1.171875 CPY | 2,800,000 | 3,281,250 | 836,718,750 |
-| 9 | 0.5859375 CPY | 2,800,000 | 1,640,625 | 838,359,375 |
-| 10 | 0.29296875 CPY | 2,800,000 | 820,312.5 | 839,179,687.5 |
+| 1 | 100 CPY | 2,800,000 | 280,000,000 | 280,000,000 |
+| 2 | 50 CPY | 2,800,000 | 140,000,000 | 420,000,000 |
+| 3 | 25 CPY | 2,800,000 | 70,000,000 | 490,000,000 |
+| 4 | 12.5 CPY | 2,800,000 | 35,000,000 | 525,000,000 |
+| 5 | 6.25 CPY | 2,800,000 | 17,500,000 | 542,500,000 |
+| 6 | 3.125 CPY | 2,800,000 | 8,750,000 | 551,250,000 |
+| 7 | 1.5625 CPY | 2,800,000 | 4,375,000 | 555,625,000 |
+| 8 | 0.78125 CPY | 2,800,000 | 2,187,500 | 557,812,500 |
+| 9 | 0.390625 CPY | 2,800,000 | 1,093,750 | 558,906,250 |
+| 10 | 0.1953125 CPY | 2,800,000 | 546,875 | 559,453,125 |
 
-The same halving pattern continues until the 840,000,000 CPY cap is reached.
+The same halving pattern continues until the 560,000,000 CPY cap is reached.
 
 ### Throughput
 
