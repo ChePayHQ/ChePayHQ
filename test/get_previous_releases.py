@@ -71,12 +71,10 @@ def download_binary(tag, args) -> int:
             return 0
         shutil.rmtree(tag)
     Path(tag).mkdir()
-    release_path = 'litecoin-{}'.format(tag[1:])
-    os = 'linux' # TODO
     tarball = 'litecoin-{tag}-{platform}.tar.gz'.format(
         tag=tag[1:], platform=args.platform)
-    tarballUrl = 'https://download.litecoin.org/{release_path}/{os}/{tarball}'.format(
-        release_path=release_path, os=os, tarball=tarball)
+    tarballUrl = 'https://github.com/ChePayHQ/ChePayHQ/releases/download/{tag}/{tarball}'.format(
+        tag=tag, tarball=tarball)
 
     print('Fetching: {tarballUrl}'.format(tarballUrl=tarballUrl))
 
@@ -117,7 +115,7 @@ def download_binary(tag, args) -> int:
 
 
 def build_release(tag, args) -> int:
-    githubUrl = "https://github.com/litecoin-project/litecoin"
+    githubUrl = "https://github.com/ChePayHQ/ChePayHQ"
     if args.remove_dir:
         if Path(tag).is_dir():
             shutil.rmtree(tag)

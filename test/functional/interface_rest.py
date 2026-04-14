@@ -23,6 +23,7 @@ from test_framework.util import (
 )
 
 from test_framework.messages import BLOCK_HEADER_SIZE
+from test_framework.blocktools import COINBASE_MATURITY
 
 class ReqType(Enum):
     JSON = 1
@@ -77,17 +78,17 @@ class RESTTest (BitcoinTestFramework):
 
     def run_test(self):
         self.url = urllib.parse.urlparse(self.nodes[0].url)
-        self.log.info("Mine blocks and send Litecoin to node 1")
+        self.log.info("Mine blocks and send ChePay to node 1")
 
         # Random address so node1's balance doesn't increase
         not_related_address = "2MxqoHEdNQTyYeX1mHcbrrpzgojbosTpCvJ"
 
         self.nodes[0].generate(1)
         self.sync_all()
-        self.nodes[1].generatetoaddress(100, not_related_address)
+        self.nodes[1].generatetoaddress(COINBASE_MATURITY + 1, not_related_address)
         self.sync_all()
 
-        assert_equal(self.nodes[0].getbalance(), 50)
+        assert_equal(self.nodes[0].getbalance(), 150)
 
         txid = self.nodes[0].sendtoaddress(self.nodes[1].getnewaddress(), 0.1)
         self.sync_all()

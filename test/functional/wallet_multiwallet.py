@@ -14,6 +14,7 @@ import stat
 import time
 
 from test_framework.authproxy import JSONRPCException
+from test_framework.blocktools import COINBASE_MATURITY
 from test_framework.test_framework import BitcoinTestFramework
 from test_framework.test_node import ErrorMatch
 from test_framework.util import (
@@ -21,6 +22,8 @@ from test_framework.util import (
     assert_raises_rpc_error,
     get_rpc_proxy,
 )
+
+BLOCK_REWARD = 150
 
 got_loading_error = False
 def test_load_unload(node, name):
@@ -192,7 +195,7 @@ class MultiWalletTest(BitcoinTestFramework):
         assert_equal(set(node.listwallets()), {"w4", "w5"})
         w5 = wallet("w5")
         w5_info = w5.getwalletinfo()
-        assert_equal(w5_info['immature_balance'], 50)
+        assert_equal(w5_info['immature_balance'], BLOCK_REWARD)
 
         competing_wallet_dir = os.path.join(self.options.tmpdir, 'competing_walletdir')
         os.mkdir(competing_wallet_dir)
@@ -217,7 +220,7 @@ class MultiWalletTest(BitcoinTestFramework):
         node.generatetoaddress(nblocks=1, address=wallets[0].getnewaddress())
         for wallet_name, wallet in zip(wallet_names, wallets):
             info = wallet.getwalletinfo()
-            assert_equal(info['immature_balance'], 50 if wallet is wallets[0] else 0)
+            assert_equal(info['immature_balance'], BLOCK_REWARD if wallet is wallets[0] else 0)
             assert_equal(info['walletname'], wallet_name)
 
         # accessing invalid wallet fails
@@ -227,8 +230,8 @@ class MultiWalletTest(BitcoinTestFramework):
         assert_raises_rpc_error(-19, "Wallet file not specified", node.getwalletinfo)
 
         w1, w2, w3, w4, *_ = wallets
-        node.generatetoaddress(nblocks=101, address=w1.getnewaddress())
-        assert_equal(w1.getbalance(), 100)
+        node.generatetoaddress(nblocks=COINBASE_MATURITY + 1, address=w1.getnewaddress())
+        assert_equal(w1.getbalance(), BLOCK_REWARD)
         assert_equal(w2.getbalance(), 0)
         assert_equal(w3.getbalance(), 0)
         assert_equal(w4.getbalance(), 0)

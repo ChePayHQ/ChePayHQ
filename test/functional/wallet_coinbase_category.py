@@ -40,20 +40,20 @@ class CoinbaseCategoryTest(BitcoinTestFramework):
         # Coinbase transaction is immature after 1 confirmation
         self.assert_category("immature", address, txid, 0)
 
-        # Mine another 99 blocks on top
-        self.nodes[0].generate(99)
-        # Coinbase transaction is still immature after 100 confirmations
-        self.assert_category("immature", address, txid, 99)
+        # Mine up to the coinbase maturity threshold.
+        self.nodes[0].generate(COINBASE_MATURITY - 1)
+        # Coinbase transaction is still immature until it reaches maturity.
+        self.assert_category("immature", address, txid, COINBASE_MATURITY - 1)
 
         # Mine one more block
         self.nodes[0].generate(1)
         # Coinbase transaction is now matured, so category is "generate"
-        self.assert_category("generate", address, txid, 100)
+        self.assert_category("generate", address, txid, COINBASE_MATURITY)
 
         # Orphan block that paid to address
         self.nodes[0].invalidateblock(hash)
         # Coinbase transaction is now orphaned
-        self.assert_category("orphan", address, txid, 100)
+        self.assert_category("orphan", address, txid, COINBASE_MATURITY)
 
 if __name__ == '__main__':
     CoinbaseCategoryTest().main()

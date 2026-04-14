@@ -11,9 +11,12 @@ RPCs tested are:
 """
 from collections import defaultdict
 
+from test_framework.blocktools import COINBASE_MATURITY
 from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error
 from test_framework.wallet_util import test_address
+
+BLOCK_REWARD = 150
 
 
 class WalletLabelsTest(BitcoinTestFramework):
@@ -30,13 +33,13 @@ class WalletLabelsTest(BitcoinTestFramework):
         assert_equal(len(node.listunspent()), 0)
 
         # Note each time we call generate, all generated coins go into
-        # the same address, so we call twice to get two addresses w/50 each
+        # the same address, so we call twice to get two addresses w/150 each
         node.generatetoaddress(nblocks=1, address=node.getnewaddress(label='coinbase'))
-        node.generatetoaddress(nblocks=101, address=node.getnewaddress(label='coinbase'))
-        assert_equal(node.getbalance(), 100)
+        node.generatetoaddress(nblocks=COINBASE_MATURITY + 1, address=node.getnewaddress(label='coinbase'))
+        assert_equal(node.getbalance(), BLOCK_REWARD * 2)
 
         # there should be 2 address groups
-        # each with 1 address with a balance of 50 Bitcoins
+        # each with 1 address with a balance of 150 CPY
         address_groups = node.listaddressgroupings()
         assert_equal(len(address_groups), 2)
         # the addresses aren't linked now, but will be after we send to the
@@ -45,14 +48,14 @@ class WalletLabelsTest(BitcoinTestFramework):
         for address_group in address_groups:
             assert_equal(len(address_group), 1)
             assert_equal(len(address_group[0]), 3)
-            assert_equal(address_group[0][1], 50)
+            assert_equal(address_group[0][1], BLOCK_REWARD)
             assert_equal(address_group[0][2], 'coinbase')
             linked_addresses.add(address_group[0][0])
 
-        # send 50 from each address to a third address not in this wallet
+        # send 150 from each address to a third address not in this wallet
         common_address = "msf4WtN1YQKXvNtvdFYt9JBnUD2FB41kjr"
         node.sendmany(
-            amounts={common_address: 100},
+            amounts={common_address: BLOCK_REWARD * 2},
             subtractfeefrom=[common_address],
             minconf=1,
         )
@@ -68,7 +71,7 @@ class WalletLabelsTest(BitcoinTestFramework):
 
         # we want to reset so that the "" label has what's expected.
         # otherwise we're off by exactly the fee amount as that's mined
-        # and matures in the next 100 blocks
+        # and matures in the next 6 blocks
         amount_to_send = 1.0
 
         # Create labels and make sure subsequent label API calls
@@ -104,7 +107,7 @@ class WalletLabelsTest(BitcoinTestFramework):
             label.verify(node)
             assert_equal(node.getreceivedbylabel(label.name), 2)
             label.verify(node)
-        node.generate(101)
+        node.generate(COINBASE_MATURITY + 1)
 
         # Check that setlabel can assign a label to a new unused address.
         for label in labels:
@@ -124,7 +127,7 @@ class WalletLabelsTest(BitcoinTestFramework):
                 label.add_address(multisig_address)
                 label.purpose[multisig_address] = "send"
                 label.verify(node)
-            node.generate(101)
+            node.generate(COINBASE_MATURITY + 1)
 
         # Check that setlabel can change the label of an address from a
         # different label.
@@ -138,9 +141,9 @@ class WalletLabelsTest(BitcoinTestFramework):
         node.createwallet(wallet_name='watch_only', disable_private_keys=True)
         wallet_watch_only = node.get_wallet_rpc('watch_only')
         BECH32_VALID = {
-            '✔️_VER15_PROG40': 'rltc10qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqevpw9x',
-            '✔️_VER16_PROG03': 'rltc1sqqqqqap5g4h',
-            '✔️_VER16_PROB02': 'rltc1sqqqqfsjxnh',
+            '✔️_VER15_PROG40': 'rp10qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqf9mf49',
+            '✔️_VER16_PROG03': 'rp1sqqqqqlecsjz',
+            '✔️_VER16_PROB02': 'rp1sqqqqy7zc5u',
         }
         BECH32_INVALID = {
             '❌_VER15_PROG41': 'bcrt1sqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqajlxj8',
@@ -156,7 +159,7 @@ class WalletLabelsTest(BitcoinTestFramework):
             ad = BECH32_INVALID[l]
             assert_raises_rpc_error(
                 -5,
-                "Address is not valid" if self.options.descriptors else "Invalid Litecoin address or script",
+                "Address is not valid" if self.options.descriptors else "Invalid ChePay address or script",
                 lambda: wallet_watch_only.importaddress(label=l, rescan=False, address=ad),
             )
 

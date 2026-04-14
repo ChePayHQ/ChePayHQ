@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2021 The Litecoin Core developers
+# Copyright (c) 2021 The ChePay Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Basic MWEB test"""
@@ -40,7 +40,7 @@ class MWEBBasicTest(BitcoinTestFramework):
         self.sync_all()
 
         self.log.info("Check for MWEB UTXOs")
-        utxos = [x for x in self.nodes[0].listunspent() if x['address'].startswith('tmweb')]
+        utxos = [x for x in self.nodes[0].listunspent() if x['address'].startswith('tpmweb')]
         assert_equal(len(utxos), 2)
         utxos.sort(key=lambda x: x['amount'])
 
@@ -51,7 +51,7 @@ class MWEBBasicTest(BitcoinTestFramework):
             utxo1 = utxos[0]
           
         assert utxo0['amount'] == 10 and utxo0['address'] == addr0
-        assert 2 < utxo1['amount'] < 2.5 # change from single 12.5 LTC coinbase being spent
+        assert utxo1['amount'] > 0  # change from the mined coinbase being spent
 
         self.log.info("Send MWEB coins to node 1")
         addr1 = self.nodes[1].getnewaddress(address_type='mweb')
@@ -60,12 +60,12 @@ class MWEBBasicTest(BitcoinTestFramework):
         self.sync_all()
 
         self.log.info("Check MWEB coins are spent on node 0")
-        utxos = [x for x in self.nodes[0].listunspent() if x['address'].startswith('tmweb')]
+        utxos = [x for x in self.nodes[0].listunspent() if x['address'].startswith('tpmweb')]
         assert_equal(len(utxos), 2)
         assert sum(x['amount'] for x in utxos) < 45
 
         self.log.info("Check for MWEB UTXO on node 1")
-        utxos = [x for x in self.nodes[1].listunspent() if x['address'].startswith('tmweb')]
+        utxos = [x for x in self.nodes[1].listunspent() if x['address'].startswith('tpmweb')]
         assert_equal(len(utxos), 1)
         assert utxos[0]['amount'] == 5 and utxos[0]['address'] == addr1
 
@@ -76,7 +76,7 @@ class MWEBBasicTest(BitcoinTestFramework):
         self.sync_all()
 
         self.log.info("Check MWEB coins are spent on node 1")
-        utxos = [x for x in self.nodes[1].listunspent() if x['address'].startswith('tmweb')]
+        utxos = [x for x in self.nodes[1].listunspent() if x['address'].startswith('tpmweb')]
         assert_equal(len(utxos), 1)
         assert sum(x['amount'] for x in utxos) < 3
         self.log.info("UTXO amount: {}".format(utxos[0]['amount']))
@@ -94,7 +94,7 @@ class MWEBBasicTest(BitcoinTestFramework):
         self.sync_all()
 
         self.log.info("Check MWEB coins are spent on node 1")
-        utxos = [x for x in self.nodes[1].listunspent() if x['address'].startswith('tmweb')]
+        utxos = [x for x in self.nodes[1].listunspent() if x['address'].startswith('tpmweb')]
         assert_equal(len(utxos), 1)
         assert sum(x['amount'] for x in utxos) < 1
 

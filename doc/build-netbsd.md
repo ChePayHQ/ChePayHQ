@@ -22,7 +22,7 @@ libtool
 pkg-config
 python37
 
-git clone https://github.com/litecoin-project/litecoin.git
+git clone https://github.com/ChePayHQ/ChePayHQ.git
 ```
 
 See [dependencies.md](dependencies.md) for a complete overview.
@@ -47,7 +47,7 @@ from the root of the repository. Then set `BDB_PREFIX` for the next section:
 export BDB_PREFIX="$PWD/db4"
 ```
 
-### Building Litecoin Core
+### Building ChePay Core
 
 **Important**: Use `gmake` (the non-GNU `make` will exit with an error).
 

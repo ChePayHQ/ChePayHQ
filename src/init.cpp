@@ -110,7 +110,7 @@ static const char* DEFAULT_ASMAP_FILENAME="ip_asn.map";
 /**
  * The PID file facilities.
  */
-static const char* BITCOIN_PID_FILENAME = "litecoind.pid";
+static const char* BITCOIN_PID_FILENAME = "chepayd.pid";
 
 static fs::path GetPidFile(const ArgsManager& args)
 {
@@ -598,7 +598,7 @@ void SetupServerArgs(NodeContext& node)
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com/litecoin-project/litecoin>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/ChePayHQ/ChePayHQ>";
 
     return CopyrightHolders(strprintf(_("Copyright (C) %i-%i").translated, 2011, COPYRIGHT_YEAR) + " ") + "\n" +
            "\n" +

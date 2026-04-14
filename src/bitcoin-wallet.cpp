@@ -44,7 +44,7 @@ static bool WalletAppInit(int argc, char* argv[])
     }
     if (argc < 2 || HelpRequested(gArgs)) {
         std::string usage = strprintf("%s litecoin-wallet version", PACKAGE_NAME) + " " + FormatFullVersion() + "\n\n" +
-                                      "litecoin-wallet is an offline tool for creating and interacting with " PACKAGE_NAME " wallet files.\n" +
+                                      "ChePay Core litecoin-wallet is an offline tool for creating and interacting with " PACKAGE_NAME " wallet files.\n" +
                                       "By default litecoin-wallet will act on wallets in the default mainnet wallet directory in the datadir.\n" +
                                       "To change the target wallet, use the -datadir, -wallet and -testnet/-regtest arguments.\n\n" +
                                       "Usage:\n" +

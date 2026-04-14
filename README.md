@@ -1,85 +1,120 @@
-Litecoin Core integration/staging tree
-=====================================
-fork
-[![Build Status](https://travis-ci.org/litecoin-project/litecoin.svg?branch=master)](https://travis-ci.org/litecoin-project/litecoin)
+ChePay Core integration/staging tree
+====================================
 
-https://litecoin.org
+ChePay is a Litecoin-derived memecoin with utility. The codebase keeps the
+Litecoin-derived core architecture, but the chain parameters, branding,
+network ports, and installer assets are set for ChePay.
 
-What is Litecoin?
-----------------
+Project home: <https://github.com/ChePayHQ/ChePayHQ>
 
-Litecoin is an experimental digital currency that enables instant payments to
-anyone, anywhere in the world. Litecoin uses peer-to-peer technology to operate
-with no central authority: managing transactions and issuing money are carried
-out collectively by the network. Litecoin Core is the name of open source
-software which enables the use of this currency.
+## Fork Parameters
 
-For more information, as well as an immediately useable, binary version of
-the Litecoin Core software, see [https://litecoin.org](https://litecoin.org).
+### Network Summary
 
-License
--------
+| Parameter | Value |
+| --- | --- |
+| Coin name | ChePay |
+| Ticker / unit | CPY |
+| Slogan | the memcoin with utility |
+| Genesis message | `CheyPay was born 4/13/2026` |
+| Proof of work | Scrypt |
+| SegWit | Enabled |
+| Max block size | 2 MB base / 8 MWU weight limit |
+| Block time | 45 seconds |
+| Difficulty adjustment | Every block |
+| Transaction confirmations | 6 confirmations |
+| Base block reward | 150 CPY/block |
+| Halving interval | 2,800,000 blocks |
+| Max supply | 840,000,000 CPY |
+| Transaction fee | 0.00000001 CPY per byte, adjustable |
+| P2P port | 28333 |
+| RPC port | 28332 |
+| Base58 pubkey prefix | `C` |
+| Base58 script prefix | `P` |
+| Bech32 prefix | `p1...` |
+| Premine | None |
 
-Litecoin Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
-information or see https://opensource.org/licenses/MIT.
+### Economics
 
-Development Process
--------------------
+ChePay uses a fixed-supply, reward-halving model that starts at 150 CPY per
+block and halves every 2,800,000 blocks, or roughly every 4 years at the
+45-second block target.
 
-The `master` branch is regularly built (see `doc/build-*.md` for instructions) and tested, but it is not guaranteed to be
-completely stable. [Tags](https://github.com/litecoin-project/litecoin/tags) are created
-regularly from release branches to indicate new official, stable release versions of Litecoin Core.
+That is 35 halvings over roughly 140 years, which is long enough to create a
+slow tail of issuance without turning the chain into a perpetual inflation
+model.
 
-The https://github.com/litecoin-project/gui repository is used exclusively for the
-development of the GUI. Its master branch is identical in all monotree
-repositories. Release branches and tags do not exist, so please do not fork
-that repository unless it is for development reasons.
+That schedule yields:
 
-The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md)
-and useful hints for developers can be found in [doc/developer-notes.md](doc/developer-notes.md).
+* 420,000,000 CPY in the first era
+* 630,000,000 CPY after the first halving
+* 735,000,000 CPY after the second halving
+* a long-tail emission curve that asymptotically approaches 840,000,000 CPY
 
-The developer [mailing list](https://groups.google.com/forum/#!forum/litecoin-dev)
-should be used to discuss complicated or controversial changes before working
-on a patch set.
+The economics are intentionally simple:
 
-Developer IRC can be found on Freenode at #litecoin-dev.
+* The 45-second block target gives faster settlement than Litecoin while still
+  leaving room for network propagation and confirmation safety.
+* The 2 MB base block limit with SegWit-style weight accounting lets the chain
+  carry more transaction volume without relying on a premine or inflationary
+  subsidy.
+* 6 confirmations keep wallet maturity and payment finality aligned with the
+  faster block cadence.
+* The reward schedule creates a large initial distribution window, then tapers
+  into a long-lived, low-inflation tail.
+* The network ports are dedicated to ChePay so the fork can run independently
+  from Litecoin defaults.
 
-Testing
--------
+### Issuance Schedule
 
-Testing and code review is the bottleneck for development; we get more pull
-requests than we can review and test on short notice. Please be patient and help out by testing
-other people's pull requests, and remember this is a security-critical project where any mistake might cost people
-lots of money.
+The block subsidy starts at 150 CPY and halves every 2,800,000 blocks. The
+first few eras are:
 
-### Automated Testing
+| Era | Block reward | Blocks in era | Issued in era | Cumulative supply |
+| --- | --- | --- | --- | --- |
+| 1 | 150 CPY | 2,800,000 | 420,000,000 | 420,000,000 |
+| 2 | 75 CPY | 2,800,000 | 210,000,000 | 630,000,000 |
+| 3 | 37.5 CPY | 2,800,000 | 105,000,000 | 735,000,000 |
+| 4 | 18.75 CPY | 2,800,000 | 52,500,000 | 787,500,000 |
+| 5 | 9.375 CPY | 2,800,000 | 26,250,000 | 813,750,000 |
+| 6 | 4.6875 CPY | 2,800,000 | 13,125,000 | 826,875,000 |
+| 7 | 2.34375 CPY | 2,800,000 | 6,562,500 | 833,437,500 |
+| 8 | 1.171875 CPY | 2,800,000 | 3,281,250 | 836,718,750 |
+| 9 | 0.5859375 CPY | 2,800,000 | 1,640,625 | 838,359,375 |
+| 10 | 0.29296875 CPY | 2,800,000 | 820,312.5 | 839,179,687.5 |
 
-Developers are strongly encouraged to write [unit tests](src/test/README.md) for new code, and to
-submit new unit tests for old code. Unit tests can be compiled and run
-(assuming they weren't disabled in configure) with: `make check`. Further details on running
-and extending unit tests can be found in [/src/test/README.md](/src/test/README.md).
+The same halving pattern continues until the 840,000,000 CPY cap is reached.
 
-There are also [regression and integration tests](/test), written
-in Python, that are run automatically on the build server.
-These tests can be run (if the [test dependencies](/test) are installed) with: `test/functional/test_runner.py`
+### Throughput
 
-The Travis CI system makes sure that every pull request is built for Windows, Linux, and macOS, and that unit/sanity tests are run automatically.
+The fork is tuned for higher transaction throughput than Litecoin's default
+settings. In ideal transaction mixes, the 2 MB base block limit and 45-second
+block cadence give an upper target of roughly 400 TPS. Real-world throughput
+will vary with transaction size, script complexity, and network conditions.
 
-### Manual Quality Assurance (QA) Testing
+## Development
 
-Changes should be tested by somebody other than the developer who wrote the
-code. This is especially important for large or high-risk changes. It is useful
-to add a test plan to the pull request description if testing the changes is
-not straightforward.
+The `main` branch is built and tested regularly, but it is not guaranteed to be
+stable. Follow the build instructions in `doc/build-*.md`.
 
-Translations
-------------
+See `CONTRIBUTING.md` and `doc/developer-notes.md` for the contribution flow
+and development guidance.
 
-We only accept translation fixes that are submitted through [Bitcoin Core's Transifex page](https://explore.transifex.com/bitcoin/bitcoin/).
-Translations are converted to Litecoin periodically.
+## Testing
 
-Translations are periodically pulled from Transifex and merged into the git repository. See the
-[translation process](doc/translation_process.md) for details on how this works.
+Run unit tests with:
 
-**Important**: We do not accept translation changes as GitHub pull requests because the next
-pull from Transifex would automatically overwrite them again.
+```sh
+make check
+```
+
+Run functional tests with:
+
+```sh
+test/functional/test_runner.py
+```
+
+## License
+
+ChePay Core is released under the terms of the MIT license. See [COPYING](COPYING)
+or <https://opensource.org/licenses/MIT>.

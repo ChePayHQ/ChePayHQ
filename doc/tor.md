@@ -1,13 +1,13 @@
-# TOR SUPPORT IN LITECOIN
+# TOR SUPPORT IN CHEPAY
 
-It is possible to run Litecoin Core as a Tor onion service, and connect to such services.
+It is possible to run ChePay Core as a Tor onion service, and connect to such services.
 
 The following directions assume you have a Tor proxy running on port 9050. Many distributions default to having a SOCKS proxy listening on port 9050, but others may not. In particular, the Tor Browser Bundle defaults to listening on port 9150. See [Tor Project FAQ:TBBSocksPort](https://www.torproject.org/docs/faq.html.en#TBBSocksPort) for how to properly
 configure Tor.
 
-## How to see information about your Tor configuration via Bitcoin Core
+## How to see information about your Tor configuration via ChePay Core
 
-There are several ways to see your local onion address in Bitcoin Core:
+There are several ways to see your local onion address in ChePay Core:
 - in the debug log (grep for "tor:" or "AddLocal")
 - in the output of RPC `getnetworkinfo` in the "localaddresses" section
 - in the output of the CLI `-netinfo` peer connections dashboard
@@ -16,9 +16,9 @@ You may set the `-debug=tor` config logging option to have additional
 information in the debug log about your Tor configuration.
 
 
-## 1. Run Litecoin Core behind a Tor proxy
+## 1. Run ChePay Core behind a Tor proxy
 
-The first step is running Litecoin Core behind a Tor proxy. This will already anonymize all
+The first step is running ChePay Core behind a Tor proxy. This will already anonymize all
 outgoing connections, but more is possible.
 
 	-proxy=ip:port  Set the proxy server. If SOCKS5 is selected (default), this proxy
@@ -47,25 +47,25 @@ In a typical situation, this suffices to run behind a Tor proxy:
 	./litecoind -proxy=127.0.0.1:9050
 
 
-## 2. Run a Litecoin Core hidden server
+## 2. Run a ChePay Core hidden server
 
 If you configure your Tor system accordingly, it is possible to make your node also
 reachable from the Tor network. Add these lines to your /etc/tor/torrc (or equivalent
 config file): *Needed for Tor version 0.2.7.0 and older versions of Tor only. For newer
 versions of Tor see [Section 3](#3-automatically-listen-on-tor).*
 
-	HiddenServiceDir /var/lib/tor/litecoin-service/
-	HiddenServicePort 9333 127.0.0.1:9333
+	HiddenServiceDir /var/lib/tor/chepay-service/
+	HiddenServicePort 28333 127.0.0.1:28333
 	HiddenServicePort 19335 127.0.0.1:19335
 
 The directory can be different of course, but virtual port numbers should be equal to
-your litecoind's P2P listen port (9333 by default), and target addresses and ports
-should be equal to binding address and port for inbound Tor connections (127.0.0.1:9334 by default).
+ChePay Core's P2P listen port (28333 by default), and target addresses and ports
+should be equal to the binding address and port for inbound Tor connections (127.0.0.1:28333 by default).
 
-	-externalip=X   You can tell litecoin about its publicly reachable addresses using
+	-externalip=X   You can tell ChePay Core about its publicly reachable addresses using
 	                this option, and this can be an onion address. Given the above
 	                configuration, you can find your onion address in
-	                /var/lib/tor/litecoin-service/hostname. For connections
+	                /var/lib/tor/chepay-service/hostname. For connections
 	                coming from unroutable addresses (such as 127.0.0.1, where the
 	                Tor proxy typically runs), onion addresses are given
 	                preference for your node to advertise itself with.
@@ -100,7 +100,7 @@ as well, use `discover` instead:
 
 	./litecoind ... -discover
 
-and open port 9333 on your firewall (or use -upnp).
+and open port 28333 on your firewall (or use -upnp).
 
 If you only want to use Tor to reach .onion addresses, but not use it as a proxy
 for normal IPv4/IPv6 communication, use:
@@ -111,13 +111,13 @@ for normal IPv4/IPv6 communication, use:
 
 Starting with Tor version 0.2.7.1 it is possible, through Tor's control socket
 API, to create and destroy 'ephemeral' onion services programmatically.
-Litecoin Core has been updated to make use of this.
+ChePay Core has been updated to make use of this.
 
 This means that if Tor is running (and proper authentication has been configured),
-Litecoin Core automatically creates an onion service to listen on. This will positively
+ChePay Core automatically creates an onion service to listen on. This will positively
 affect the number of available .onion nodes.
 
-This new feature is enabled by default if Litecoin Core is listening (`-listen`), and
+This new feature is enabled by default if ChePay Core is listening (`-listen`), and
 requires a Tor connection to work. It can be explicitly disabled with `-listenonion=0`
 and, if not disabled, configured using the `-torcontrol` and `-torpassword` settings.
 To show verbose debugging information, pass `-debug=tor`.
@@ -143,7 +143,7 @@ in the tor configuration file. The hashed password can be obtained with the comm
 
 ## 4. Privacy recommendations
 
-- Do not add anything but Litecoin Core ports to the onion service created in section 2.
+- Do not add anything but ChePay Core ports to the onion service created in section 2.
   If you run a web service too, create a new onion service for that.
   Otherwise it is trivial to link them, which may reduce privacy. Hidden
   services created automatically (as in section 3) always have only one port

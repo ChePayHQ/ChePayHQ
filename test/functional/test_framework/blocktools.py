@@ -48,6 +48,7 @@ from .util import assert_equal
 WITNESS_SCALE_FACTOR = 4
 MAX_BLOCK_SIGOPS = 20000
 MAX_BLOCK_SIGOPS_WEIGHT = MAX_BLOCK_SIGOPS * WITNESS_SCALE_FACTOR
+COINBASE_MATURITY = 6
 
 # Genesis block time (regtest)
 TIME_GENESIS_BLOCK = 1296688602
@@ -126,7 +127,7 @@ def create_coinbase(height, pubkey=None, extra_output_script=None, fees=0):
     coinbase = CTransaction()
     coinbase.vin.append(CTxIn(COutPoint(0, 0xffffffff), script_BIP34_coinbase_height(height), 0xffffffff))
     coinbaseoutput = CTxOut()
-    coinbaseoutput.nValue = 50 * COIN
+    coinbaseoutput.nValue = 150 * COIN
     halvings = int(height / 150)  # regtest
     coinbaseoutput.nValue >>= halvings
     coinbaseoutput.nValue += fees

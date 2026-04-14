@@ -29,16 +29,16 @@
   <string>????</string>
 
   <key>CFBundleExecutable</key>
-  <string>Litecoin-Qt</string>
+  <string>ChePay-Qt</string>
 
   <key>CFBundleName</key>
-  <string>Litecoin-Qt</string>
+  <string>ChePay-Qt</string>
 
   <key>LSHasLocalizedDisplayName</key>
   <true/>
 
   <key>CFBundleIdentifier</key>
-  <string>org.litecoin.Litecoin-Qt</string>
+  <string>org.chepay.ChePay-Qt</string>
 
   <key>CFBundleURLTypes</key>
   <array>
@@ -46,10 +46,10 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>org.litecoin.LitecoinPayment</string>
+      <string>org.chepay.ChePayPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>litecoin</string>
+        <string>chepay</string>
       </array>
     </dict>
   </array>

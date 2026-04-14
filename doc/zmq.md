@@ -5,7 +5,7 @@ connections, inter-process communication, and shared-memory,
 providing various message-oriented semantics such as publish/subscribe,
 request/reply, and push/pull.
 
-The Litecoin Core daemon can be configured to act as a trusted "border
+The ChePay Core daemon can be configured to act as a trusted "border
 router", implementing the litecoin wire protocol and relay, making
 consensus decisions, maintaining the local blockchain database,
 broadcasting locally generated transactions into the network, and
@@ -33,7 +33,7 @@ buffering or reassembly.
 
 ## Prerequisites
 
-The ZeroMQ feature in Litecoin Core requires the ZeroMQ API >= 4.0.0
+The ZeroMQ feature in ChePay Core requires the ZeroMQ API >= 4.0.0
 [libzmq](https://github.com/zeromq/libzmq/releases).
 For version information, see [dependencies.md](dependencies.md).
 Typically, it is packaged by distributions as something like
@@ -101,7 +101,7 @@ is structured as the following based on the type of message:
 
 Where the 8-byte uints correspond to the mempool sequence number.
 
-These options can also be provided in litecoin.conf.
+These options can also be provided in chepay.conf.
 
 ZeroMQ endpoint specifiers for TCP (and others) are documented in the
 [ZeroMQ API](http://api.zeromq.org/4-0:_start).
@@ -146,7 +146,7 @@ disconnections.
 
 There are several possibilities that ZMQ notification can get lost
 during transmission depending on the communication type you are
-using. Litecoind appends an up-counting sequence number to each
+using. ChePayd appends an up-counting sequence number to each
 notification which allows listeners to detect lost notifications.
 
 The `sequence` topic refers specifically to the mempool sequence

@@ -39,16 +39,16 @@ MY_SUBVERSION = b"/python-p2p-tester:0.0.3/"
 MY_RELAY = 1 # from version 70001 onwards, fRelay should be appended to version messages (BIP37)
 
 MAX_LOCATOR_SZ = 101
-MAX_BLOCK_BASE_SIZE = 1000000
+MAX_BLOCK_BASE_SIZE = 2000000
 MAX_BLOOM_FILTER_SIZE = 36000
 MAX_BLOOM_HASH_FUNCS = 50
 
 COIN = 100000000  # 1 btc in satoshis
-MAX_MONEY = 84000000 * COIN
+MAX_MONEY = 840000000 * COIN
 
 BIP125_SEQUENCE_NUMBER = 0xfffffffd  # Sequence number that is BIP 125 opt-in and BIP 68-opt-out
 
-MAX_PROTOCOL_MESSAGE_LENGTH = 4000000  # Maximum length of incoming protocol messages
+MAX_PROTOCOL_MESSAGE_LENGTH = 8000000  # Maximum length of incoming protocol messages
 MAX_HEADERS_RESULTS = 2000  # Number of headers sent in one getheaders result
 MAX_INV_SIZE = 50000  # Maximum number of entries in an 'inv' protocol message
 
@@ -683,7 +683,7 @@ class CTransaction:
     def is_valid(self):
         self.calc_sha256()
         for tout in self.vout:
-            if tout.nValue < 0 or tout.nValue > 84000000 * COIN:
+            if tout.nValue < 0 or tout.nValue > 840000000 * COIN:
                 return False
         return True
 

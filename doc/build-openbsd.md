@@ -16,7 +16,7 @@ pkg_add autoconf # (select highest version, e.g. 2.69)
 pkg_add automake # (select highest version, e.g. 1.16)
 pkg_add python # (select highest version, e.g. 3.8)
 
-git clone https://github.com/litecoin-project/litecoin.git
+git clone https://github.com/ChePayHQ/ChePayHQ.git
 ```
 
 See [dependencies.md](dependencies.md) for a complete overview.
@@ -47,7 +47,7 @@ from the root of the repository. Then set `BDB_PREFIX` for the next section:
 export BDB_PREFIX="$PWD/db4"
 ```
 
-### Building Litecoin Core
+### Building ChePay Core
 
 **Important**: Use `gmake` (the non-GNU `make` will exit with an error).
 
@@ -112,4 +112,3 @@ If your user is in the `staff` group the limit can be raised with:
 The change will only affect the current shell and processes spawned by it. To
 make the change system-wide, change `datasize-cur` and `datasize-max` in
 `/etc/login.conf`, and reboot.
-

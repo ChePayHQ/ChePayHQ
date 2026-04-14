@@ -1,4 +1,4 @@
-Litecoin Core version 0.21.4 is now available from:
+ChePay Core version 0.21.4 is now available from:
 
  <https://download.litecoin.org/litecoin-0.21.4/>.
 

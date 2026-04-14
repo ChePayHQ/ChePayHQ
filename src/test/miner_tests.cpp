@@ -252,7 +252,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     // Just to make sure we can still make simple blocks
     BOOST_CHECK(pblocktemplate = AssemblerForTest(chainparams).CreateNewBlock(scriptPubKey));
 
-    const CAmount BLOCKSUBSIDY = 50*COIN;
+    const CAmount BLOCKSUBSIDY = 100*COIN;
     const CAmount LOWFEE = CENT;
     const CAmount HIGHFEE = COIN;
     const CAmount HIGHERFEE = 4*COIN;
@@ -362,8 +362,8 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 
     // subsidy changing
     int nHeight = ::ChainActive().Height();
-    // Create an actual 209999-long block chain (without valid blocks).
-    while (::ChainActive().Tip()->nHeight < 839999) {
+    // Create an actual 2,799,999-long block chain (without valid blocks).
+    while (::ChainActive().Tip()->nHeight < 2799999) {
         CBlockIndex* prev = ::ChainActive().Tip();
         CBlockIndex* next = new CBlockIndex();
         next->phashBlock = new uint256(InsecureRand256());
@@ -374,8 +374,8 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         ::ChainActive().SetTip(next);
     }
     BOOST_CHECK(pblocktemplate = AssemblerForTest(chainparams).CreateNewBlock(scriptPubKey));
-    // Extend to a 210000-long block chain.
-    while (::ChainActive().Tip()->nHeight < 840000) {
+    // Extend to a 2,800,000-long block chain.
+    while (::ChainActive().Tip()->nHeight < 2800000) {
         CBlockIndex* prev = ::ChainActive().Tip();
         CBlockIndex* next = new CBlockIndex();
         next->phashBlock = new uint256(InsecureRand256());
