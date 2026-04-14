@@ -9,7 +9,7 @@ Test case is:
 fourth node is a miner.
 1 2 3 each mine a block to start, then
 Miner creates enough blocks so 1 2 3 each have a mature
-100 CPY coinbase to spend.
+150 CPY coinbase to spend.
 Then 5 iterations of 1/2/3 sending coins amongst
 themselves to get transactions in the wallets,
 and the miner mining one block.
@@ -42,7 +42,7 @@ from test_framework.util import (
     assert_raises_rpc_error,
 )
 
-BLOCK_REWARD = Decimal('100')
+BLOCK_REWARD = Decimal('150')
 
 
 class WalletBackupTest(BitcoinTestFramework):

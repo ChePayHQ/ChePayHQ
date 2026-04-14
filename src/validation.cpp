@@ -1270,7 +1270,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
     if (halvings >= 64)
         return 0;
 
-    CAmount nSubsidy = 100 * COIN;
+    CAmount nSubsidy = 150 * COIN;
     // Subsidy is cut in half every 2,800,000 blocks, which is approximately every 4 years at 45 seconds per block.
     nSubsidy >>= halvings;
     return nSubsidy;

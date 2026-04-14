@@ -23,7 +23,7 @@ from test_framework.util import (
     get_rpc_proxy,
 )
 
-BLOCK_REWARD = 100
+BLOCK_REWARD = 150
 
 got_loading_error = False
 def test_load_unload(node, name):

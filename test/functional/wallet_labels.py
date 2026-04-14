@@ -16,7 +16,7 @@ from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error
 from test_framework.wallet_util import test_address
 
-BLOCK_REWARD = 100
+BLOCK_REWARD = 150
 
 
 class WalletLabelsTest(BitcoinTestFramework):
@@ -33,13 +33,13 @@ class WalletLabelsTest(BitcoinTestFramework):
         assert_equal(len(node.listunspent()), 0)
 
         # Note each time we call generate, all generated coins go into
-        # the same address, so we call twice to get two addresses w/100 each
+        # the same address, so we call twice to get two addresses w/150 each
         node.generatetoaddress(nblocks=1, address=node.getnewaddress(label='coinbase'))
         node.generatetoaddress(nblocks=COINBASE_MATURITY + 1, address=node.getnewaddress(label='coinbase'))
         assert_equal(node.getbalance(), BLOCK_REWARD * 2)
 
         # there should be 2 address groups
-        # each with 1 address with a balance of 100 CPY
+        # each with 1 address with a balance of 150 CPY
         address_groups = node.listaddressgroupings()
         assert_equal(len(address_groups), 2)
         # the addresses aren't linked now, but will be after we send to the
@@ -52,7 +52,7 @@ class WalletLabelsTest(BitcoinTestFramework):
             assert_equal(address_group[0][2], 'coinbase')
             linked_addresses.add(address_group[0][0])
 
-        # send 100 from each address to a third address not in this wallet
+        # send 150 from each address to a third address not in this wallet
         common_address = "msf4WtN1YQKXvNtvdFYt9JBnUD2FB41kjr"
         node.sendmany(
             amounts={common_address: BLOCK_REWARD * 2},

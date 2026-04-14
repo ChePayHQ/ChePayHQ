@@ -14,12 +14,12 @@ from test_framework.util import (
     get_auth_cookie,
 )
 
-# The block reward of coinbaseoutput.nValue (100) CPY/block matures after
+# The block reward of coinbaseoutput.nValue (150) CPY/block matures after
 # COINBASE_MATURITY blocks. Therefore, after mining COINBASE_MATURITY + 1
 # blocks we expect node 0 to have a balance of
-# (BLOCKS - COINBASE_MATURITY) * 100 CPY/block.
+# (BLOCKS - COINBASE_MATURITY) * 150 CPY/block.
 BLOCKS = COINBASE_MATURITY + 1
-BALANCE = (BLOCKS - COINBASE_MATURITY) * 100
+BALANCE = (BLOCKS - COINBASE_MATURITY) * 150
 
 JSON_PARSING_ERROR = 'error: Error parsing JSON: foo'
 BLOCKS_VALUE_OF_ZERO = 'error: the first argument (number of blocks to generate, default: 1) must be an integer value greater than zero'
@@ -111,7 +111,7 @@ class TestBitcoinCli(BitcoinTestFramework):
             w1.sendtoaddress(w2.getnewaddress(), amounts[1])
             w1.sendtoaddress(w3.getnewaddress(), amounts[2])
 
-            # Mine a block to confirm; adds a block reward (100 CPY) to the default wallet.
+            # Mine a block to confirm; adds a block reward (150 CPY) to the default wallet.
             self.nodes[0].generate(1)
 
             self.log.info("Test -getinfo with multiple wallets and -rpcwallet returns specified wallet balance")
