@@ -1,0 +1,17 @@
+services:
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    container_name: chepay-duckdns
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - SUBDOMAINS=chepay-node1
+      - TOKEN=${DUCKDNS_TOKEN}
+      - LOG_FILE=false
+    healthcheck:
+      test: ["CMD-SHELL", "grep -qi 'OK' /config/log/duck.log || test ! -f /config/log/duck.log"]
+      interval: 2m
+      timeout: 10s
+      retries: 3

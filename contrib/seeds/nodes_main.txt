@@ -7,3 +7,4 @@
 #
 # These are compiled into src/chainparamsseeds.h and used only for peer
 # discovery during startup.
+70.170.144.22:28333
