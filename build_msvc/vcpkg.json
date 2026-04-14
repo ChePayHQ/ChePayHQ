@@ -3,6 +3,7 @@
   "version-string": "1",
   "dependencies": [
     "berkeleydb",
+    "boost-dynamic-bitset",
     "boost-filesystem",
     "boost-multi-index",
     "boost-process",
@@ -11,6 +12,7 @@
     "boost-thread",
     "sqlite3",
     "double-conversion",
+    "openssl",
     {
       "name": "libevent",
       "features": ["thread"]

@@ -188,7 +188,9 @@ PBKDF2_SHA256(const uint8_t *passwd, size_t passwdlen, const uint8_t *salt,
 
 #define ROTL(a, b) (((a) << (b)) | ((a) >> (32 - (b))))
 
+#if defined(__clang__) || defined(__GNUC__)
 __attribute__((no_sanitize("integer")))
+#endif
 static inline void xor_salsa8(uint32_t B[16], const uint32_t Bx[16])
 {
 	uint32_t x00,x01,x02,x03,x04,x05,x06,x07,x08,x09,x10,x11,x12,x13,x14,x15;
@@ -304,7 +306,7 @@ std::string scrypt_detect_sse2()
     // MSVC
     int x86cpuid[4];
     __cpuid(x86cpuid, 1);
-    cpuid_edx = (unsigned int)buffer[3];
+    cpuid_edx = (unsigned int)x86cpuid[3];
 #else // _MSC_VER
     // Linux or i686-w64-mingw32 (gcc-4.6.3)
     unsigned int eax, ebx, ecx;

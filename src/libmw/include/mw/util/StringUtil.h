@@ -6,7 +6,6 @@
 
 #include <mw/common/Traits.h>
 
-#include <fmt/format.h>
 #include <memory>
 #include <iostream>
 #include <string>
@@ -17,6 +16,8 @@
 #include <codecvt>
 #include <algorithm>
 #include <system_error>
+#include <sstream>
+#include <type_traits>
 
 #include <util/strencodings.h>
 
@@ -30,7 +31,8 @@ public:
     template<typename ... Args>
     static std::string Format(const char* format, const Args& ... args)
     {
-        return fmt::format(format, ConvertArg(args) ...);
+        const std::vector<std::string> arg_values{ ToStringValue(ConvertArg(args))... };
+        return FormatImpl(format, arg_values);
     }
 
     static bool StartsWith(const std::string& value, const std::string& beginning)
@@ -116,6 +118,75 @@ public:
     }
 
 private:
+    static std::string FormatImpl(const std::string& format, const std::vector<std::string>& args)
+    {
+        std::string result;
+        result.reserve(format.size() + 32);
+
+        size_t arg_index = 0;
+        for (size_t i = 0; i < format.size(); ++i) {
+            if (format[i] == '{') {
+                if (i + 1 < format.size() && format[i + 1] == '{') {
+                    result.push_back('{');
+                    ++i;
+                    continue;
+                }
+
+                const size_t close = format.find('}', i + 1);
+                if (close == std::string::npos) {
+                    result.push_back(format[i]);
+                    continue;
+                }
+
+                const std::string spec = format.substr(i + 1, close - (i + 1));
+                const std::string value = (arg_index < args.size()) ? args[arg_index++] : std::string();
+
+                if (spec.empty()) {
+                    result += value;
+                } else if (spec.rfind(":0>", 0) == 0) {
+                    const int width = atoi(spec.substr(3).c_str());
+                    if (width > 0 && static_cast<int>(value.size()) < width) {
+                        result.append(static_cast<size_t>(width - value.size()), '0');
+                    }
+                    result += value;
+                } else {
+                    result += value;
+                }
+
+                i = close;
+                continue;
+            }
+
+            if (format[i] == '}' && i + 1 < format.size() && format[i + 1] == '}') {
+                result.push_back('}');
+                ++i;
+                continue;
+            }
+
+            result.push_back(format[i]);
+        }
+
+        return result;
+    }
+
+    static std::string ToStringValue(const std::string& value)
+    {
+        return value;
+    }
+
+    static std::string ToStringValue(const char* value)
+    {
+        return value == nullptr ? std::string() : std::string(value);
+    }
+
+    template <typename T>
+    static std::string ToStringValue(const T& value)
+    {
+        std::ostringstream stream;
+        stream << value;
+        return stream.str();
+    }
+
     static std::string ConvertArg(const std::string& x)
     {
         return x;

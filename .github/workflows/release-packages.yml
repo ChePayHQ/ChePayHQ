@@ -1,0 +1,143 @@
+name: Build And Publish Release Packages
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-2022
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Generate MSVC projects
+        run: python build_msvc/msvc-autogen.py -toolset v143
+
+      - name: Build release binaries
+        run: msbuild build_msvc/bitcoin.sln /m /p:Configuration=Release /p:Platform=x64 /t:bitcoin-qt;bitcoind;bitcoin-cli;bitcoin-tx;bitcoin-wallet
+
+      - name: Package Windows binaries
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path release\windows | Out-Null
+          Copy-Item build_msvc\x64\Release\bitcoin-qt.exe release\windows\
+          Copy-Item build_msvc\x64\Release\bitcoind.exe release\windows\
+          Copy-Item build_msvc\x64\Release\bitcoin-cli.exe release\windows\
+          Copy-Item build_msvc\x64\Release\bitcoin-tx.exe release\windows\
+          Copy-Item build_msvc\x64\Release\bitcoin-wallet.exe release\windows\
+          Copy-Item RELEASE-INSTRUCTIONS.md release\windows\README.txt
+          Compress-Archive -Path release\windows\* -DestinationPath release\ChePay-windows-x64.zip -Force
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ChePay-windows-x64
+          path: release/ChePay-windows-x64.zip
+
+  build-linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libtool autotools-dev automake pkg-config bsdmainutils python3
+          sudo apt-get install -y libevent-dev libboost-system-dev libboost-filesystem-dev libboost-test-dev libboost-thread-dev
+          sudo apt-get install -y libsqlite3-dev libminiupnpc-dev libzmq3-dev libqrencode-dev
+
+      - name: Configure
+        run: |
+          ./autogen.sh
+          ./configure --disable-tests --without-gui --disable-bench
+
+      - name: Build
+        run: make -j"$(nproc)"
+
+      - name: Package Linux binaries
+        run: |
+          mkdir -p release/linux
+          cp src/bitcoind release/linux/
+          cp src/bitcoin-cli release/linux/
+          cp src/bitcoin-tx release/linux/
+          cp src/bitcoin-wallet release/linux/
+          cp RELEASE-INSTRUCTIONS.md release/linux/README.txt
+          tar -czf release/ChePay-linux-x86_64.tar.gz -C release/linux .
+
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ChePay-linux-x86_64
+          path: release/ChePay-linux-x86_64.tar.gz
+
+  build-macos:
+    runs-on: macos-13
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build deps
+        run: |
+          brew update
+          brew install automake libtool pkg-config boost miniupnpc libevent sqlite zeromq qrencode
+
+      - name: Configure
+        run: |
+          ./autogen.sh
+          ./configure --disable-tests --without-gui --disable-bench
+
+      - name: Build
+        run: make -j"$(sysctl -n hw.ncpu)"
+
+      - name: Package macOS binaries
+        run: |
+          mkdir -p release/macos
+          cp src/bitcoind release/macos/
+          cp src/bitcoin-cli release/macos/
+          cp src/bitcoin-tx release/macos/
+          cp src/bitcoin-wallet release/macos/
+          cp RELEASE-INSTRUCTIONS.md release/macos/README.txt
+          tar -czf release/ChePay-macos-x86_64.tar.gz -C release/macos .
+
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ChePay-macos-x86_64
+          path: release/ChePay-macos-x86_64.tar.gz
+
+  publish-release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs:
+      - build-windows
+      - build-linux
+      - build-macos
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/ChePay-windows-x64/ChePay-windows-x64.zip
+            artifacts/ChePay-linux-x86_64/ChePay-linux-x86_64.tar.gz
+            artifacts/ChePay-macos-x86_64/ChePay-macos-x86_64.tar.gz
+          body_path: RELEASE-INSTRUCTIONS.md

@@ -113,6 +113,7 @@ build
 
 # Previous releases
 releases
+release
 
 #lcov
 *.gcno

@@ -14,7 +14,12 @@
 #endif
 
 #include <boost/filesystem.hpp>
+#if __has_include(<ghc/filesystem.hpp>)
 #include <ghc/filesystem.hpp>
+#else
+#include <filesystem>
+namespace ghc { namespace filesystem = std::filesystem; }
+#endif
 
 #ifdef _MSC_VER
 #pragma warning(pop)

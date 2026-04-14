@@ -7,7 +7,7 @@
 #include <util/system.h>
 
 #ifdef HAVE_BOOST_PROCESS
-#include <boost/process.hpp>
+#include <boost/process/v1.hpp>
 #endif // HAVE_BOOST_PROCESS
 
 #include <chainparamsbase.h>

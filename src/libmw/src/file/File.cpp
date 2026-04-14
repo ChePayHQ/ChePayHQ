@@ -34,7 +34,7 @@ void File::Truncate(const uint64_t size)
     bool success = false;
 
 #if defined(WIN32)
-    HANDLE hFile = CreateFile(
+    HANDLE hFile = CreateFileA(
         m_path.ToString().c_str(),
         GENERIC_WRITE,
         FILE_SHARE_READ,

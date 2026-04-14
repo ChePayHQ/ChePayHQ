@@ -176,6 +176,18 @@ struct RPCArg {
     RPCArg(
         const std::string name,
         const Type type,
+        const Optional optional,
+        const std::string description,
+        const std::string oneline_description = "",
+        const std::vector<std::string> type_str = {},
+        const bool hidden = false)
+        : RPCArg{name, type, Fallback{optional}, description, oneline_description, type_str, hidden}
+    {
+    }
+
+    RPCArg(
+        const std::string name,
+        const Type type,
         const Fallback fallback,
         const std::string description,
         const std::vector<RPCArg> inner,
@@ -191,6 +203,18 @@ struct RPCArg {
           m_type_str{std::move(type_str)}
     {
         CHECK_NONFATAL(type == Type::ARR || type == Type::OBJ);
+    }
+
+    RPCArg(
+        const std::string name,
+        const Type type,
+        const Optional optional,
+        const std::string description,
+        const std::vector<RPCArg> inner,
+        const std::string oneline_description = "",
+        const std::vector<std::string> type_str = {})
+        : RPCArg{name, type, Fallback{optional}, description, inner, oneline_description, type_str}
+    {
     }
 
     bool IsOptional() const;
