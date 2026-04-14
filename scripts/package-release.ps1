@@ -14,11 +14,16 @@ $binDir = Join-Path $packageRoot "bin"
 New-Item -ItemType Directory -Force $binDir | Out-Null
 
 $candidates = @(
-    (Join-Path $repoRoot (("build_msvc\\{0}\\{1}\\chepay-qt.exe") -f $Platform, $Configuration)),
-    (Join-Path $repoRoot (("build_msvc\\{0}\\{1}\\chepayd.exe") -f $Platform, $Configuration)),
-    (Join-Path $repoRoot (("build_msvc\\{0}\\{1}\\chepay-cli.exe") -f $Platform, $Configuration)),
-    (Join-Path $repoRoot (("build_msvc\\{0}\\{1}\\chepay-tx.exe") -f $Platform, $Configuration)),
-    (Join-Path $repoRoot (("build_msvc\\{0}\\{1}\\chepay-wallet.exe") -f $Platform, $Configuration))
+    (Join-Path $repoRoot (("build_msvc\\bitcoin-qt\\{0}\\{1}\\bitcoin-qt.exe") -f $Platform, $Configuration)),
+    (Join-Path $repoRoot (("build_msvc\\bitcoind\\{0}\\{1}\\bitcoind.exe") -f $Platform, $Configuration)),
+    (Join-Path $repoRoot (("build_msvc\\bitcoin-cli\\{0}\\{1}\\bitcoin-cli.exe") -f $Platform, $Configuration)),
+    (Join-Path $repoRoot (("build_msvc\\bitcoin-tx\\{0}\\{1}\\bitcoin-tx.exe") -f $Platform, $Configuration)),
+    (Join-Path $repoRoot (("build_msvc\\bitcoin-wallet\\{0}\\{1}\\bitcoin-wallet.exe") -f $Platform, $Configuration)),
+    (Join-Path $repoRoot (("build_msvc\\{0}\\{1}\\bitcoin-qt.exe") -f $Platform, $Configuration)),
+    (Join-Path $repoRoot (("build_msvc\\{0}\\{1}\\bitcoind.exe") -f $Platform, $Configuration)),
+    (Join-Path $repoRoot (("build_msvc\\{0}\\{1}\\bitcoin-cli.exe") -f $Platform, $Configuration)),
+    (Join-Path $repoRoot (("build_msvc\\{0}\\{1}\\bitcoin-tx.exe") -f $Platform, $Configuration)),
+    (Join-Path $repoRoot (("build_msvc\\{0}\\{1}\\bitcoin-wallet.exe") -f $Platform, $Configuration))
 )
 
 $found = @()
@@ -44,6 +49,7 @@ $((Get-ChildItem $binDir -File | ForEach-Object { "- " + $_.Name }) -join "`n")
 
 Bootstrap defaults:
 - DNS seed: chepay-node1.duckdns.org
+- Local bootstrap launcher: scripts/start-network.ps1 (includes optional local auto-mining)
 "@
 $readme | Set-Content (Join-Path $packageRoot "README.txt")
 

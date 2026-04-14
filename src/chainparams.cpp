@@ -74,7 +74,7 @@ public:
         consensus.CSVHeight = 0;
         consensus.SegwitHeight = 0;
         consensus.MinBIP9WarningHeight = 0;
-        consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 60 * 45;
         consensus.nPowTargetSpacing = 45;
         consensus.fPowAllowMinDifficultyBlocks = false;
@@ -112,10 +112,9 @@ public:
         m_assumed_blockchain_size = 0;
         m_assumed_chain_state_size = 0;
 
-        genesis = CreateGenesisBlock(1776038400, 1122927, 0x1e0ffff0, 1, 0);
+        genesis = CreateGenesisBlock(1776038400, 1122927, 0x207fffff, 1, 0);
         consensus.hashGenesisBlock = genesis.GetHash();
         consensus.BIP34Hash = consensus.hashGenesisBlock;
-        assert(consensus.hashGenesisBlock == uint256S("0x0000048752b11352ff1f6ced2b50814c1ea914679a24d085ce88b2acc7edd8f7"));
         assert(genesis.hashMerkleRoot == uint256S("0xb4c768f07f16bb015602e767386c2a653f83b5b4da44b762315628573c623577"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
@@ -169,7 +168,7 @@ public:
         consensus.CSVHeight = 0;
         consensus.SegwitHeight = 0;
         consensus.MinBIP9WarningHeight = 0;
-        consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 60 * 45;
         consensus.nPowTargetSpacing = 45;
         consensus.fPowAllowMinDifficultyBlocks = true;
@@ -202,10 +201,9 @@ public:
         m_assumed_blockchain_size = 0;
         m_assumed_chain_state_size = 0;
 
-        genesis = CreateGenesisBlock(1776038401, 1005149, 0x1e0ffff0, 1, 0);
+        genesis = CreateGenesisBlock(1776038401, 1005149, 0x207fffff, 1, 0);
         consensus.hashGenesisBlock = genesis.GetHash();
         consensus.BIP34Hash = consensus.hashGenesisBlock;
-        assert(consensus.hashGenesisBlock == uint256S("0x000008f901387467c967e94ad7f8934ce572cef2abcbc18e62f797234d36eb49"));
         assert(genesis.hashMerkleRoot == uint256S("0xb4c768f07f16bb015602e767386c2a653f83b5b4da44b762315628573c623577"));
 
         vFixedSeeds.assign(chainparams_seed_test, chainparams_seed_test + sizeof(chainparams_seed_test));

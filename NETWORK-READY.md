@@ -7,6 +7,7 @@ This repo now includes a Dockerized DuckDNS updater and a bootstrap launcher scr
 - DuckDNS updater compose file: `docker/duckdns/compose.yaml`
 - DuckDNS token env file: `docker/duckdns/.env`
 - Bootstrap launcher: `scripts/start-network.ps1`
+- Local auto-miner helper: `scripts/auto-mine-local.ps1`
 
 ## Start everything
 From repo root:
@@ -16,10 +17,11 @@ powershell -ExecutionPolicy Bypass -File .\scripts\start-network.ps1
 ```
 
 That command:
-1. Starts DuckDNS updater in Docker.
-2. Writes `%APPDATA%\ChePay\chepay.conf` with bootstrap `addnode`.
+1. Starts DuckDNS updater in Docker (if compose/env files are present).
+2. Writes `%APPDATA%\ChePay\chepay.conf` with local bootstrap settings.
 3. Tries to resolve `chepay-node1.duckdns.org`.
-4. Launches `chepay-qt.exe` automatically if it exists.
+4. Launches `bitcoin-qt.exe` automatically if it exists.
+5. Starts local auto-mining so the chain can advance from block 0 without waiting on external peers.
 
 ## Check DuckDNS container
 ```powershell
