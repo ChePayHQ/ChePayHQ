@@ -4,6 +4,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <amount.h>
+#include <consensus/consensus.h>
 #include <core_io.h>
 #include <interfaces/chain.h>
 #include <key_io.h>
@@ -48,6 +49,7 @@ using interfaces::FoundBlock;
 
 static const std::string WALLET_ENDPOINT_BASE = "/wallet/";
 static const std::string HELP_REQUIRING_PASSPHRASE{"\nRequires wallet passphrase to be set with walletpassphrase call if wallet is encrypted.\n"};
+static const std::string COINBASE_MATURITY_CONFIRMATIONS{std::to_string(COINBASE_MATURITY)};
 
 static inline bool GetAvoidReuseFlag(const CWallet* const pwallet, const UniValue& param) {
     bool can_avoid_reuse = pwallet->IsWalletFlagSet(WALLET_FLAG_AVOID_REUSE);
@@ -1502,8 +1504,8 @@ static RPCHelpMan listtransactions()
                             {RPCResult::Type::STR, "category", "The transaction category.\n"
                                 "\"send\"                  Transactions sent.\n"
                                 "\"receive\"               Non-coinbase transactions received.\n"
-                                "\"generate\"              Coinbase transactions received with more than 6 confirmations.\n"
-                                "\"immature\"              Coinbase transactions received with 6 or fewer confirmations.\n"
+                                "\"generate\"              Coinbase transactions received with more than " + COINBASE_MATURITY_CONFIRMATIONS + " confirmations.\n"
+                                "\"immature\"              Coinbase transactions received with " + COINBASE_MATURITY_CONFIRMATIONS + " or fewer confirmations.\n"
                                 "\"orphan\"                Orphaned coinbase transactions received."},
                             {RPCResult::Type::STR_AMOUNT, "amount", "The amount in " + CURRENCY_UNIT + ". This is negative for the 'send' category, and is positive\n"
                                 "for all other categories"},
@@ -1610,8 +1612,8 @@ static RPCHelpMan listwallettransactions()
                             {RPCResult::Type::STR, "category", "The transaction category.\n"
                                 "\"send\"                  Transactions sent.\n"
                                 "\"receive\"               Non-coinbase transactions received.\n"
-                                "\"generate\"              Coinbase transactions received with more than 6 confirmations.\n"
-                                "\"immature\"              Coinbase transactions received with 6 or fewer confirmations.\n"
+                                "\"generate\"              Coinbase transactions received with more than " + COINBASE_MATURITY_CONFIRMATIONS + " confirmations.\n"
+                                "\"immature\"              Coinbase transactions received with " + COINBASE_MATURITY_CONFIRMATIONS + " or fewer confirmations.\n"
                                 "\"orphan\"                Orphaned coinbase transactions received."},
                             {RPCResult::Type::STR_AMOUNT, "amount", "The amount in " + CURRENCY_UNIT + ". This is negative for the 'send' category, and is positive\n"
                                 "for all other categories"},
@@ -1707,8 +1709,8 @@ static RPCHelpMan listsinceblock()
                                 {RPCResult::Type::STR, "category", "The transaction category.\n"
                                     "\"send\"                  Transactions sent.\n"
                                     "\"receive\"               Non-coinbase transactions received.\n"
-                                    "\"generate\"              Coinbase transactions received with more than 6 confirmations.\n"
-                                    "\"immature\"              Coinbase transactions received with 6 or fewer confirmations.\n"
+                                    "\"generate\"              Coinbase transactions received with more than " + COINBASE_MATURITY_CONFIRMATIONS + " confirmations.\n"
+                                    "\"immature\"              Coinbase transactions received with " + COINBASE_MATURITY_CONFIRMATIONS + " or fewer confirmations.\n"
                                     "\"orphan\"                Orphaned coinbase transactions received."},
                                 {RPCResult::Type::STR_AMOUNT, "amount", "The amount in " + CURRENCY_UNIT + ". This is negative for the 'send' category, and is positive\n"
                                     "for all other categories"},
@@ -1852,8 +1854,8 @@ static RPCHelpMan gettransaction()
                                 {RPCResult::Type::STR, "category", "The transaction category.\n"
                                     "\"send\"                  Transactions sent.\n"
                                     "\"receive\"               Non-coinbase transactions received.\n"
-                                    "\"generate\"              Coinbase transactions received with more than 6 confirmations.\n"
-                                    "\"immature\"              Coinbase transactions received with 6 or fewer confirmations.\n"
+                                    "\"generate\"              Coinbase transactions received with more than " + COINBASE_MATURITY_CONFIRMATIONS + " confirmations.\n"
+                                    "\"immature\"              Coinbase transactions received with " + COINBASE_MATURITY_CONFIRMATIONS + " or fewer confirmations.\n"
                                     "\"orphan\"                Orphaned coinbase transactions received."},
                                 {RPCResult::Type::STR_AMOUNT, "amount", "The amount in " + CURRENCY_UNIT},
                                 {RPCResult::Type::STR, "label", "A comment for the address/transaction, if any"},

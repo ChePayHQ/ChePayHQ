@@ -22,7 +22,8 @@ Project home: <https://github.com/ChePayHQ/ChePayHQ>
 | Max block size | 2 MB base / 8 MWU weight limit |
 | Block time | 45 seconds |
 | Difficulty adjustment | Every 60 blocks |
-| Transaction confirmations | 6 confirmations |
+| Regular transaction confirmations | 6 confirmations |
+| Coinbase reward maturity | 100 confirmations |
 | Base block reward | 150 CPY/block |
 | Halving interval | 2,800,000 blocks |
 | Max supply | 840,000,000 CPY |
@@ -59,8 +60,9 @@ The economics are intentionally simple:
 * The 2 MB base block limit with SegWit-style weight accounting lets the chain
   carry more transaction volume without relying on a premine or inflationary
   subsidy.
-* 6 confirmations keep wallet maturity and payment finality aligned with the
-  faster block cadence.
+* Regular transactions are treated as settled after 6 confirmations, while
+  coinbase rewards mature after 100 confirmations. That keeps payment
+  finality fast without letting freshly mined subsidy circulate immediately.
 * The reward schedule creates a large initial distribution window, then tapers
   into a long-lived, low-inflation tail.
 * The network ports are dedicated to ChePay so the fork can run independently
