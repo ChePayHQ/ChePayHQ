@@ -92,6 +92,32 @@ settings. In ideal transaction mixes, the 2 MB base block limit and 45-second
 block cadence give an upper target of roughly 400 TPS. Real-world throughput
 will vary with transaction size, script complexity, and network conditions.
 
+### Network Bootstrap
+
+ChePay nodes discover peers through two layers:
+
+* `src/chainparams.cpp` hardcodes the network magic, ports, genesis block, and
+  address prefixes.
+* `src/chainparamsseeds.h` is generated from `contrib/seeds/nodes_main.txt`
+  and `contrib/seeds/nodes_test.txt`.
+* The genesis block is fixed separately for mainnet and testnet and is not
+  expected to change after launch.
+
+Those seed entries are bootstrap peers only. They are not consensus data.
+Each seed should be a stable ChePay node you control, with the P2P port open
+on the public network. If you do not have seed nodes ready yet, the network
+can still be started with manual peers using `-addnode=<ip>` or
+`-connect=<ip>`, but public discovery will be weak until you publish stable
+bootstrap nodes or a DNS seed.
+
+In practice:
+
+* Put 2 to 3 always-on mainnet nodes in `nodes_main.txt`.
+* Put testnet bootstrap nodes in `nodes_test.txt` if you want testnet
+  discovery.
+* Regenerate `src/chainparamsseeds.h` after changing either file.
+* Rebuild the binaries so the new seed list is compiled in.
+
 ## Development
 
 The `main` branch is built and tested regularly, but it is not guaranteed to be

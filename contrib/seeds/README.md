@@ -1,18 +1,29 @@
 # Seeds
 
-Utility to generate the seeds.txt list that is compiled into the client
+Utility to generate the seed list that is compiled into the client
 (see [src/chainparamsseeds.h](/src/chainparamsseeds.h) and other utilities in [contrib/seeds](/contrib/seeds)).
 
-Be sure to update `PATTERN_AGENT` in `makeseeds.py` to include the current version,
-and remove old versions as necessary (at a minimum when GetDesirableServiceFlags
-changes its default return value, as those are the services which seeds are added
-to addrman with).
+The seed files are bootstrap data only. They are not part of consensus. Use
+them to ship a small set of always-on ChePay peers that new nodes can discover
+on startup.
 
-The seeds compiled into the release are created from poolers's DNS seed data, like this:
+Recommended workflow:
 
-    curl -s https://www.litecoinpool.org/seeds.txt > seeds_main.txt
-    python3 makeseeds.py < seeds_main.txt > nodes_main.txt
-    python3 generate-seeds.py . > ../../src/chainparamsseeds.h
+1. Run at least 2 to 3 stable seed nodes on public IPs or DNS names you control.
+2. Put one endpoint per line in `nodes_main.txt` and, if you want testnet
+   bootstrapping, `nodes_test.txt`.
+3. Regenerate `src/chainparamsseeds.h` from this directory.
+
+Example line formats:
+
+```text
+203.0.113.10:28333
+[2001:db8::10]:28333
+seed1.chepay.example:28333
+```
+
+If you do not have seed nodes yet, keep the lists empty and use `-addnode` or
+`-connect` while bringing the network up.
 
 ## Dependencies
 

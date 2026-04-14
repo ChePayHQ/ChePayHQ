@@ -124,6 +124,7 @@ public:
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
         vSeeds.clear();
+        vFixedSeeds.assign(chainparams_seed_main, chainparams_seed_main + sizeof(chainparams_seed_main));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,28);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,55);
@@ -134,8 +135,6 @@ public:
 
         bech32_hrp = "p";
         mweb_hrp = "pmweb";
-
-        vFixedSeeds.clear();
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
@@ -208,10 +207,9 @@ public:
         assert(consensus.hashGenesisBlock == uint256S("0x000008f901387467c967e94ad7f8934ce572cef2abcbc18e62f797234d36eb49"));
         assert(genesis.hashMerkleRoot == uint256S("0xb4c768f07f16bb015602e767386c2a653f83b5b4da44b762315628573c623577"));
 
-        vFixedSeeds.clear();
+        vFixedSeeds.assign(chainparams_seed_test, chainparams_seed_test + sizeof(chainparams_seed_test));
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.clear();
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
@@ -222,8 +220,6 @@ public:
 
         bech32_hrp = "tp";
         mweb_hrp = "tpmweb";
-
-        vFixedSeeds.clear();
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = false;
