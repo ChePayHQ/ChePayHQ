@@ -44,7 +44,6 @@ $((Get-ChildItem $binDir -File | ForEach-Object { "- " + $_.Name }) -join "`n")
 
 Bootstrap defaults:
 - DNS seed: chepay-node1.duckdns.org
-- Fixed seed fallback: 70.170.144.22:28333
 "@
 $readme | Set-Content (Join-Path $packageRoot "README.txt")
 

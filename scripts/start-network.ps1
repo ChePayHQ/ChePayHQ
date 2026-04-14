@@ -1,5 +1,5 @@
 param(
-    [string]$PublicIP = "70.170.144.22",
+    [string]$PublicIP = "",
     [string]$SeedHost = "chepay-node1.duckdns.org",
     [int]$P2PPort = 28333,
     [int]$RPCPort = 28332
@@ -36,8 +36,11 @@ dns=1
 port=$P2PPort
 rpcport=$RPCPort
 addnode=${SeedHost}:$P2PPort
-externalip=${PublicIP}:$P2PPort
 "@
+
+if ($PublicIP) {
+    $conf += "`nexternalip=${PublicIP}:$P2PPort`n"
+}
 $conf | Set-Content $confPath
 
 Write-Host "Wrote config to $confPath"

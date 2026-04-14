@@ -4,7 +4,6 @@ This repository contains bootstrap and runtime updates for first-network launch.
 
 ## Included in this update
 - Mainnet DNS seed in code: `chepay-node1.duckdns.org`
-- Mainnet fixed seed source: `70.170.144.22:28333`
 - Generated fixed seed header updated
 - Dockerized DuckDNS updater for seed host IP maintenance
 - Runtime scripts:
